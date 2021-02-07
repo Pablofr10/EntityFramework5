@@ -5,6 +5,8 @@ namespace CpmPedido.Repository
 {
     public class ApplicationDbContext : DbContext
     {
+        public virtual DbSet<Pedido> Pedidos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -17,6 +19,9 @@ namespace CpmPedido.Repository
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+        {
+            ChangeTracker.AutoDetectChangesEnabled = false;
+        }
     }
 }
