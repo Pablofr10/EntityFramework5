@@ -1,6 +1,4 @@
-﻿using System;
-using CpmPedido.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using CpmPedido.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CpmPedido.Repository
@@ -10,6 +8,7 @@ namespace CpmPedido.Repository
         ClienteMap(): base("tb_cliente") { }
         public override void Configure(EntityTypeBuilder<Cliente> builder)
         {
+            base.Configure(builder);
         }
     }
 }

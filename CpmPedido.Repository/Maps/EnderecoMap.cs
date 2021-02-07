@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CpmPedido.Repository
 {
-    public class PedidoMap: BaseDomainMap<Pedido>
+    public class EnderecoMap: BaseDomainMap<Endereco>
     {
-        PedidoMap(): base("tb_pedido") { }
-        public override void Configure(EntityTypeBuilder<Pedido> builder)
+        EnderecoMap(): base("tb_endereco") { }
+        public override void Configure(EntityTypeBuilder<Endereco> builder)
         {
             base.Configure(builder);
         }

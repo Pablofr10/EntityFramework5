@@ -1,6 +1,4 @@
-﻿using System;
-using CpmPedido.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using CpmPedido.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CpmPedido.Repository
@@ -11,6 +9,7 @@ namespace CpmPedido.Repository
 
         public override void Configure(EntityTypeBuilder<Cidade> builder)
         {
+            base.Configure(builder);
         }
     }
 }
