@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Data.Common;
+using CpmPedido.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Npgsql;
+using Microsoft.EntityFrameworkCore;
 
 namespace CpmPedido.API
 {
@@ -23,10 +20,18 @@ namespace CpmPedido.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public DbConnection DbConnection => new NpgsqlConnection(Configuration.GetConnectionString("App"));
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseNpgsql(
+                    DbConnection,
+                    assembly => assembly.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
+            });
 
+            DependencyInjection.Register(services);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -34,7 +39,6 @@ namespace CpmPedido.API
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
