@@ -1,10 +1,8 @@
 ﻿using System;
-namespace CpmPedido.Domain.Interfaces
+namespace CpmPedido.Domain
 {
-    public class IExibivel
+    public interface IExibivel
     {
-        public IExibivel()
-        {
-        }
+        bool Ativo { get; set; }
     }
 }
