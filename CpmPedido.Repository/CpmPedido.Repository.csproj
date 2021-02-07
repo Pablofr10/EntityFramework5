@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Commom\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Maps\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CpmPedido.Domain\CpmPedido.Domain.csproj" />
+    <ProjectReference Include="..\CpmPedido.Interface\CpmPedido.Interface.csproj" />
+  </ItemGroup>
+</Project>
