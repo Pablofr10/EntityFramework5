@@ -1,4 +1,6 @@
-﻿namespace CpmPedido.Domain
+﻿using System.Collections.Generic;
+
+namespace CpmPedido.Domain
 {
     public class Cliente : BaseDomain, IExibivel
     {
@@ -7,5 +9,6 @@
         public int IdEndereco { get; set; }
         public virtual Endereco Endereco { get; set; }
         public bool Ativo { get; set; }
+        public virtual List<Pedido> Pedidos { get; set; }
     }
 }
