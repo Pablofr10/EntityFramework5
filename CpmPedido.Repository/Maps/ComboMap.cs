@@ -27,6 +27,8 @@ namespace CpmPedido.Repository
                     {
                         x.ToTable("tb_produto_combo");
 
+                        x.HasKey(f => new { f.IdProduto, f.IdCombo });
+
                         x.Property(x => x.IdProduto).HasColumnName("id_produto").IsRequired();
                         x.Property(x => x.IdCombo).HasColumnName("id_combo").IsRequired();
                     }
