@@ -32,7 +32,8 @@ namespace CpmPedido.API
             });
 
             DependencyInjection.Register(services);
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(opt =>
+            opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CpmPedido.API", Version = "v1" });

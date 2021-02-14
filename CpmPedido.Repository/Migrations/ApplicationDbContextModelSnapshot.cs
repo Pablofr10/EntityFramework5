@@ -274,7 +274,8 @@ namespace CpmPedido.Repository.Migrations
                         .HasColumnName("criado_em");
 
                     b.Property<TimeSpan>("Entrega")
-                        .HasColumnType("interval");
+                        .HasColumnType("interval")
+                        .HasColumnName("entrega");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("integer")
@@ -284,7 +285,7 @@ namespace CpmPedido.Repository.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
-                        .HasColumnName("entrega");
+                        .HasColumnName("numero");
 
                     b.Property<decimal>("ValorTotal")
                         .HasPrecision(17, 2)
