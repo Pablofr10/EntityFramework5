@@ -3,7 +3,8 @@ namespace CpmPedido.Repository
 {
         public class BaseRepository
         {
-            public readonly ApplicationDbContext DbContext;
+        protected const int TamanhoPagina = 5;
+            protected readonly ApplicationDbContext DbContext;
             public BaseRepository(ApplicationDbContext dbContext)
             {
                 DbContext = dbContext;
