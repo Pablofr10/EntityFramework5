@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CpmPedido.Domain;
 using CpmPedido.Interface.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace CpmPedido.Repository
 {
@@ -12,11 +13,14 @@ namespace CpmPedido.Repository
         {
         }
 
+
         public List<Produto> Get()
         {
             return DbContext.Produtos
+                .Include(x => x.Categoria)
                 .Where(x => x.Ativo)
-                .OrderBy(x => x.Nome).ToList();
+                .OrderBy(x => x.Nome)
+                .ToList();
             
         }
 
@@ -25,11 +29,21 @@ namespace CpmPedido.Repository
             string TEXT = text.ToUpper().Trim();
 
             return DbContext.Produtos
+                .Include(x => x.Categoria)
                 .Where(x => x.Ativo &&
                 (x.Nome.ToUpper().Contains(TEXT) ||
                 x.Descricao.ToUpper().Contains(TEXT)))
                 .OrderBy(x => x.Nome)
                 .ToList();
+        }
+
+        public Produto Detail(int id)
+        {
+            return DbContext.Produtos
+                .Include(x => x.Imagens)
+                .Include(x => x.Categoria)
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
         }
     }
 }

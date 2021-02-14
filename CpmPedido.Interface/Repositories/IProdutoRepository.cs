@@ -8,5 +8,6 @@ namespace CpmPedido.Interface.Repositories
     {
         List<Produto> Get();
         List<Produto> Search(string text);
+        Produto Detail(int id);
     }
 }
