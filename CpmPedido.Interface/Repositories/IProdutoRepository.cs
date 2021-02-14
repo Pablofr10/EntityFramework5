@@ -7,7 +7,7 @@ namespace CpmPedido.Interface.Repositories
     public interface IProdutoRepository
     {
         List<Produto> Get();
-        List<Produto> Search(string text, int pagina);
+        dynamic Search(string text, int pagina);
         Produto Detail(int id);
     }
 }

@@ -24,11 +24,11 @@ namespace CpmPedido.Repository
             
         }
 
-        public List<Produto> Search(string text, int pagina)
+        public dynamic Search(string text, int pagina)
         {
             string TEXT = text.ToUpper().Trim();
 
-            return DbContext.Produtos
+            var produtos = DbContext.Produtos
                 .Include(x => x.Categoria)
                 .Where(x => x.Ativo &&
                 (x.Nome.ToUpper().Contains(TEXT) || x.Descricao.ToUpper().Contains(TEXT)))
@@ -36,6 +36,19 @@ namespace CpmPedido.Repository
                 .Take(TamanhoPagina)
                 .OrderBy(x => x.Nome)
                 .ToList();
+
+            var quantProdutos = DbContext.Produtos
+                .Where(x => x.Ativo && (x.Nome.ToUpper().Contains(TEXT) || x.Descricao.ToUpper().Contains(TEXT)))
+                .Count();
+
+            var quantPaginas = (quantProdutos / TamanhoPagina);
+            if (quantPaginas < 1)
+            {
+                quantPaginas = 1;
+            }
+
+            return new { produtos, quantPaginas };
+
         }
 
         public Produto Detail(int id)

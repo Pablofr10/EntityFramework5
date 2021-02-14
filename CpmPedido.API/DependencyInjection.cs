@@ -14,6 +14,7 @@ namespace CpmPedido.API
         private static void RepositoryDependence(IServiceCollection serviceProvider)
         {
             serviceProvider.AddScoped<IProdutoRepository, ProdutoRepository>();
+            serviceProvider.AddScoped<IPedidoRepository, PedidoRepository>();
         }
     }
 }
