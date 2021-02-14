@@ -6,7 +6,7 @@ namespace CpmPedido.Repository
 {
     public class ComboMap: BaseDomainMap<Combo>
     {
-        ComboMap(): base("tb_combo") { }
+        public ComboMap(): base("tb_combo") { }
         public override void Configure(EntityTypeBuilder<Combo> builder)
         {
             base.Configure(builder);
@@ -21,7 +21,7 @@ namespace CpmPedido.Repository
             builder.HasMany(x => x.Produtos)
                 .WithMany(x => x.Combos)
                 .UsingEntity<ProdutoCombo>(
-                    x => x.HasOne(f => f.Produto).WithMany().HasForeignKey(f => f.Produto),
+                    x => x.HasOne(f => f.Produto).WithMany().HasForeignKey(f => f.IdProduto),
                     x => x.HasOne(f => f.Combo).WithMany().HasForeignKey(f => f.IdCombo),
                     x =>
                     {
