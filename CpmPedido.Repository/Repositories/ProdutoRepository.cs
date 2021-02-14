@@ -14,11 +14,18 @@ namespace CpmPedido.Repository
         }
 
 
-        public List<Produto> Get()
+        public dynamic Get()
         {
             return DbContext.Produtos
                 .Include(x => x.Categoria)
                 .Where(x => x.Ativo)
+                .Select(x => new
+                {
+                    x.Nome,
+                    x.Preco,
+                    Categoria = x.Categoria,
+                    x.Imagens
+                })
                 .OrderBy(x => x.Nome)
                 .ToList();
             
@@ -34,6 +41,18 @@ namespace CpmPedido.Repository
                 (x.Nome.ToUpper().Contains(TEXT) || x.Descricao.ToUpper().Contains(TEXT)))
                 .Skip(TamanhoPagina * (pagina - 1))
                 .Take(TamanhoPagina)
+                .Select(x => new
+                {
+                    x.Nome,
+                    x.Preco,
+                    Categoria = x.Categoria,
+                    Imagens = x.Imagens.Select(x => new
+                    {
+                        x.Id,
+                        x.Nome,
+                        x.NomeArquivo
+                    })
+                })
                 .OrderBy(x => x.Nome)
                 .ToList();
 
@@ -51,12 +70,46 @@ namespace CpmPedido.Repository
 
         }
 
-        public Produto Detail(int id)
+        public dynamic Detail(int id)
         {
             return DbContext.Produtos
                 .Include(x => x.Imagens)
                 .Include(x => x.Categoria)
                 .Where(x => x.Id == id)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Nome,
+                    x.Codigo,
+                    x.Descricao,
+                    x.Preco,
+                    Categoria = new
+                    {
+                        x.Categoria.Id,
+                        x.Categoria.Nome
+                    },
+                    Imagens = x.Imagens.Select(x => new
+                    {
+                        x.Id,
+                        x.Nome,
+                        x.NomeArquivo
+                    })
+                })
+                .FirstOrDefault();
+        }
+
+        public dynamic Imagens(int id)
+        {
+            return DbContext.Produtos
+                .Include(x => x.Imagens)
+                .Where(x => x.Id == id)
+                .SelectMany(x => x.Imagens, (produto, imagem) => new
+                {
+                    IdProduto = produto.Id,
+                        imagem.Id,
+                        imagem.Nome,
+                        imagem.NomeArquivo
+                })
                 .FirstOrDefault();
         }
     }
