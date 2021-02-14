@@ -40,6 +40,22 @@ namespace CpmPedido.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tb_imagem",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    nome_arquivo = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    principal = table.Column<bool>(type: "boolean", nullable: false),
+                    criado_em = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_imagem", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tb_produto",
                 columns: table => new
                 {
@@ -91,52 +107,6 @@ namespace CpmPedido.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tb_imagem",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    nome_arquivo = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    principal = table.Column<bool>(type: "boolean", nullable: false),
-                    ProdutoId = table.Column<int>(type: "integer", nullable: true),
-                    criado_em = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tb_imagem", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_tb_imagem_tb_produto_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "tb_produto",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tb_cliente",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    cpf = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
-                    id_endereco = table.Column<int>(type: "integer", nullable: false),
-                    ativo = table.Column<bool>(type: "boolean", nullable: false),
-                    criado_em = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tb_cliente", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_tb_cliente_tb_endereco_id_endereco",
-                        column: x => x.id_endereco,
-                        principalTable: "tb_endereco",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "tb_combo",
                 columns: table => new
                 {
@@ -155,6 +125,30 @@ namespace CpmPedido.Repository.Migrations
                         name: "FK_tb_combo_tb_imagem_id_imagem",
                         column: x => x.id_imagem,
                         principalTable: "tb_imagem",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tb_imagem_produto",
+                columns: table => new
+                {
+                    id_imagem = table.Column<int>(type: "integer", nullable: false),
+                    id_produto = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_imagem_produto", x => new { x.id_imagem, x.id_produto });
+                    table.ForeignKey(
+                        name: "FK_tb_imagem_produto_tb_imagem_id_imagem",
+                        column: x => x.id_imagem,
+                        principalTable: "tb_imagem",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tb_imagem_produto_tb_produto_id_produto",
+                        column: x => x.id_produto,
+                        principalTable: "tb_produto",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -190,24 +184,24 @@ namespace CpmPedido.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tb_pedido",
+                name: "tb_cliente",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    entrega = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    valor_total = table.Column<decimal>(type: "numeric(17,2)", precision: 17, scale: 2, nullable: false),
-                    Entrega = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    id_cliente = table.Column<int>(type: "integer", nullable: false),
+                    nome = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    cpf = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
+                    id_endereco = table.Column<int>(type: "integer", nullable: false),
+                    ativo = table.Column<bool>(type: "boolean", nullable: false),
                     criado_em = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tb_pedido", x => x.id);
+                    table.PrimaryKey("PK_tb_cliente", x => x.id);
                     table.ForeignKey(
-                        name: "FK_tb_pedido_tb_cliente_id_cliente",
-                        column: x => x.id_cliente,
-                        principalTable: "tb_cliente",
+                        name: "FK_tb_cliente_tb_endereco_id_endereco",
+                        column: x => x.id_endereco,
+                        principalTable: "tb_endereco",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -232,6 +226,29 @@ namespace CpmPedido.Repository.Migrations
                         name: "FK_tb_produto_combo_tb_produto_id_produto",
                         column: x => x.id_produto,
                         principalTable: "tb_produto",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tb_pedido",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    entrega = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    valor_total = table.Column<decimal>(type: "numeric(17,2)", precision: 17, scale: 2, nullable: false),
+                    Entrega = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    id_cliente = table.Column<int>(type: "integer", nullable: false),
+                    criado_em = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_pedido", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_tb_pedido_tb_cliente_id_cliente",
+                        column: x => x.id_cliente,
+                        principalTable: "tb_cliente",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -282,9 +299,9 @@ namespace CpmPedido.Repository.Migrations
                 column: "id_cidade");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tb_imagem_ProdutoId",
-                table: "tb_imagem",
-                column: "ProdutoId");
+                name: "IX_tb_imagem_produto_id_produto",
+                table: "tb_imagem_produto",
+                column: "id_produto");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_pedido_id_cliente",
@@ -320,6 +337,9 @@ namespace CpmPedido.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "tb_imagem_produto");
+
+            migrationBuilder.DropTable(
                 name: "tb_produto_combo");
 
             migrationBuilder.DropTable(
@@ -335,19 +355,19 @@ namespace CpmPedido.Repository.Migrations
                 name: "tb_pedido");
 
             migrationBuilder.DropTable(
+                name: "tb_produto");
+
+            migrationBuilder.DropTable(
                 name: "tb_imagem");
 
             migrationBuilder.DropTable(
                 name: "tb_cliente");
 
             migrationBuilder.DropTable(
-                name: "tb_produto");
+                name: "tb_categoria_produto");
 
             migrationBuilder.DropTable(
                 name: "tb_endereco");
-
-            migrationBuilder.DropTable(
-                name: "tb_categoria_produto");
 
             migrationBuilder.DropTable(
                 name: "tb_cidade");

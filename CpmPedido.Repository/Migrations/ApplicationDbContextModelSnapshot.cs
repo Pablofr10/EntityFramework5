@@ -239,14 +239,26 @@ namespace CpmPedido.Repository.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("principal");
 
-                    b.Property<int?>("ProdutoId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProdutoId");
-
                     b.ToTable("tb_imagem");
+                });
+
+            modelBuilder.Entity("CpmPedido.Domain.ImagemProduto", b =>
+                {
+                    b.Property<int>("IdImagem")
+                        .HasColumnType("integer")
+                        .HasColumnName("id_imagem");
+
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("integer")
+                        .HasColumnName("id_produto");
+
+                    b.HasKey("IdImagem", "IdProduto");
+
+                    b.HasIndex("IdProduto");
+
+                    b.ToTable("tb_imagem_produto");
                 });
 
             modelBuilder.Entity("CpmPedido.Domain.Pedido", b =>
@@ -467,11 +479,23 @@ namespace CpmPedido.Repository.Migrations
                     b.Navigation("Cidade");
                 });
 
-            modelBuilder.Entity("CpmPedido.Domain.Imagem", b =>
+            modelBuilder.Entity("CpmPedido.Domain.ImagemProduto", b =>
                 {
-                    b.HasOne("CpmPedido.Domain.Produto", null)
-                        .WithMany("Imagens")
-                        .HasForeignKey("ProdutoId");
+                    b.HasOne("CpmPedido.Domain.Imagem", "Imagem")
+                        .WithMany()
+                        .HasForeignKey("IdImagem")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CpmPedido.Domain.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("IdProduto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Imagem");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("CpmPedido.Domain.Pedido", b =>
@@ -575,8 +599,6 @@ namespace CpmPedido.Repository.Migrations
 
             modelBuilder.Entity("CpmPedido.Domain.Produto", b =>
                 {
-                    b.Navigation("Imagens");
-
                     b.Navigation("Promocoes");
                 });
 #pragma warning restore 612, 618
