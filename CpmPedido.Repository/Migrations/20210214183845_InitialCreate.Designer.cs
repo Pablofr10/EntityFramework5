@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CpmPedido.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210214042544_InitialCreate")]
+    [Migration("20210214183845_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -276,7 +276,8 @@ namespace CpmPedido.Repository.Migrations
                         .HasColumnName("criado_em");
 
                     b.Property<TimeSpan>("Entrega")
-                        .HasColumnType("interval");
+                        .HasColumnType("interval")
+                        .HasColumnName("entrega");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("integer")
@@ -286,7 +287,7 @@ namespace CpmPedido.Repository.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
-                        .HasColumnName("entrega");
+                        .HasColumnName("numero");
 
                     b.Property<decimal>("ValorTotal")
                         .HasPrecision(17, 2)

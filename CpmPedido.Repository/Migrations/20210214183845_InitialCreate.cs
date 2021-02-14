@@ -236,9 +236,9 @@ namespace CpmPedido.Repository.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    entrega = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    numero = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     valor_total = table.Column<decimal>(type: "numeric(17,2)", precision: 17, scale: 2, nullable: false),
-                    Entrega = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    entrega = table.Column<TimeSpan>(type: "interval", nullable: false),
                     id_cliente = table.Column<int>(type: "integer", nullable: false),
                     criado_em = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
