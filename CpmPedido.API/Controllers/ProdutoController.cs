@@ -15,19 +15,19 @@ namespace CpmPedido.API.Controllers
         }
 
         [HttpGet]
-        public dynamic Get()
+        public dynamic Get([FromQuery]string ordem = "")
         {
             var rep = (IProdutoRepository)ServiceProvider.GetService(typeof(IProdutoRepository));
 
-            return rep.Get();
+            return rep.Get(ordem);
         }
 
         [HttpGet]
         [Route("search/{text}/{pagina?}")]
-        public dynamic GetSearch(string text, int pagina = 1)
+        public dynamic GetSearch(string text, int pagina = 1, [FromQuery]string ordem = "")
         {
             var rep = (IProdutoRepository)ServiceProvider.GetService(typeof(IProdutoRepository));
-            return rep.Search(text, pagina);
+            return rep.Search(text, pagina, ordem);
         }
 
         [HttpGet]

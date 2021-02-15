@@ -8,34 +8,50 @@ using Microsoft.EntityFrameworkCore;
 namespace CpmPedido.Repository
 {
     public class ProdutoRepository : BaseRepository, IProdutoRepository
-    { 
+    {
         public ProdutoRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
 
 
-        public dynamic Get()
+        private void OrdenarPorNome(IQueryable<Produto> query, string ordem)
         {
-            return DbContext.Produtos
+            if (string.IsNullOrEmpty(ordem) || ordem.ToUpper() == "ASC")
+            {
+                query = query.OrderBy(x => x.Nome);
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.Nome);
+            }
+        }
+
+        public dynamic Get(string ordem)
+        {
+            var queryProduto = DbContext.Produtos
                 .Include(x => x.Categoria)
-                .Where(x => x.Ativo)
+                .Where(x => x.Ativo);
+
+            OrdenarPorNome(queryProduto, ordem);
+
+            var queryRetorno = queryProduto
                 .Select(x => new
                 {
                     x.Nome,
                     x.Preco,
                     Categoria = x.Categoria,
                     x.Imagens
-                })
-                .OrderBy(x => x.Nome)
-                .ToList();
-            
+                });
+
+            return queryRetorno.ToList();
+
         }
 
-        public dynamic Search(string text, int pagina)
+        public dynamic Search(string text, int pagina, string ordem)
         {
             string TEXT = text.ToUpper().Trim();
 
-            var produtos = DbContext.Produtos
+            var query = DbContext.Produtos
                 .Include(x => x.Categoria)
                 .Where(x => x.Ativo &&
                 (x.Nome.ToUpper().Contains(TEXT) || x.Descricao.ToUpper().Contains(TEXT)))
@@ -52,9 +68,17 @@ namespace CpmPedido.Repository
                         x.Nome,
                         x.NomeArquivo
                     })
-                })
-                .OrderBy(x => x.Nome)
-                .ToList();
+                });
+
+            if (string.IsNullOrEmpty(ordem) || ordem.ToUpper() == "ASC")
+            {
+                query = query.OrderBy(x => x.Nome);
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.Nome);
+            }
+
 
             var quantProdutos = DbContext.Produtos
                 .Where(x => x.Ativo && (x.Nome.ToUpper().Contains(TEXT) || x.Descricao.ToUpper().Contains(TEXT)))
@@ -66,7 +90,7 @@ namespace CpmPedido.Repository
                 quantPaginas = 1;
             }
 
-            return new { produtos, quantPaginas };
+            return new { query, quantPaginas };
 
         }
 
@@ -106,9 +130,9 @@ namespace CpmPedido.Repository
                 .SelectMany(x => x.Imagens, (produto, imagem) => new
                 {
                     IdProduto = produto.Id,
-                        imagem.Id,
-                        imagem.Nome,
-                        imagem.NomeArquivo
+                    imagem.Id,
+                    imagem.Nome,
+                    imagem.NomeArquivo
                 })
                 .FirstOrDefault();
         }
