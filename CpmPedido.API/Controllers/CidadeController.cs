@@ -26,5 +26,11 @@ namespace CpmPedido.API.Controllers
 
         }
 
+        public int Alterar(CidadeDto model)
+        {
+            return GetService<ICidadeRepository>().Alterar(model);
+
+        }
+
     }
 }

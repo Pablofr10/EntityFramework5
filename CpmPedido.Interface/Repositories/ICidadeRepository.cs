@@ -7,5 +7,6 @@ namespace CpmPedido.Interface
     {
         dynamic Get();
         int Criar(CidadeDto model);
+        int Alterar(CidadeDto model);
     }
 }

@@ -31,7 +31,7 @@ namespace CpmPedido.Repository
                 return 0;
             }
 
-            var nomeDuplicado = DbContext.Cidades.Any(x => x.Ativo && (x.Nome.ToUpper() == model.Nome.ToUpper() && x.Uf.ToUpper() == model.Uf.ToUpper()));
+            var nomeDuplicado = DbContext.Cidades.Any(x => x.Ativo && (x.Nome.ToUpper() == model.Nome.ToUpper() && x.Uf.ToUpper() == model.Uf.ToUpper()) && x.Id != model.Id);
 
             if (nomeDuplicado)
             {
@@ -54,6 +54,39 @@ namespace CpmPedido.Repository
             }
             catch (System.Exception ex)
             {
+            }
+
+            return 0;
+        }
+
+        public int Alterar(CidadeDto model)
+        {
+            if (model.Id <= 0)
+            {
+                return 0;
+            }
+
+            var entity = DbContext.Cidades.Find(model.Id);
+
+            if (entity == null)
+            {
+                return 0;
+            }
+
+            try
+            {
+                entity.Nome = model.Nome;
+                entity.Uf = model.Uf;
+                entity.Ativo = model.Ativo;
+
+                DbContext.Cidades.Update(entity);
+                DbContext.SaveChanges();
+
+                return entity.Id;
+            }
+            catch (System.Exception ex)
+            {
+
             }
 
             return 0;
