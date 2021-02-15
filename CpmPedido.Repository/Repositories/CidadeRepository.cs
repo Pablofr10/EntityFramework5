@@ -91,5 +91,33 @@ namespace CpmPedido.Repository
 
             return 0;
         }
+
+        public bool Excluir(int id)
+        {
+            if (id <= 0)
+            {
+                return false;
+            }
+
+            var entity = DbContext.Cidades.Find(id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                DbContext.Cidades.Remove(entity);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+
+            return false;
+        }
     }
 }

@@ -32,5 +32,15 @@ namespace CpmPedido.API.Controllers
 
         }
 
+        [HttpDelete("{id}")]
+        public bool Excluir(int id)
+        {
+            if (id > 0)
+            {
+                return GetService<ICidadeRepository>().Excluir(id);
+            }
+            return false;
+        }
+
     }
 }
