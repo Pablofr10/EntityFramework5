@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CpmPedido.Interface.Repositories;
+using CpmPedido.Interface;
 
 namespace CpmPedido.Repository
 {

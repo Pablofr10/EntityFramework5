@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CpmPedido.API.Controllers
 {
@@ -10,6 +11,11 @@ namespace CpmPedido.API.Controllers
         public AppBaseController(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
+        }
+
+        protected T GetService<T>()
+        {
+            return ServiceProvider.GetService<T>();
         }
     }
 }
