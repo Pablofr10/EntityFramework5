@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CpmPedido.Domain;
-using CpmPedido.Interface.Repositories;
+using CpmPedido.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace CpmPedido.Repository

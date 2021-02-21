@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using CpmPedido.Domain;
-
-namespace CpmPedido.Interface.Repositories
+﻿namespace CpmPedido.Interface
 {
     public interface IProdutoRepository
     {

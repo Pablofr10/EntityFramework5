@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CpmPedido.Domain;
-using CpmPedido.Interface.Repositories;
+using CpmPedido.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CpmPedido.API.Controllers

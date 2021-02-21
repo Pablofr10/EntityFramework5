@@ -1,4 +1,4 @@
-﻿namespace CpmPedido.Interface.Repositories
+﻿namespace CpmPedido.Interface
 {
     public interface IPedidoRepository
     {
